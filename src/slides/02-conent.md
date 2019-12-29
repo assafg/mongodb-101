@@ -1,36 +1,52 @@
-# Code Example
 
-```javascript
-const Footer = ({ name, title, date }) => (
-  <footer>
-    <img className="footer__logo" src={logo} />
-    <div>{title}</div>
-    <div />
-  </footer>
-);
-```
+## Why NoSQL
 
----------------
+- Handleing large amounts of data
+- Schema management is optional
+  
+---
 
-## Compare stuff
+## Why MongoDB
 
-<sidebyside>
-<div>
+- Mature (v4.x)
+- Can handle most data persistance usecases
+- High indexing abilitites
+- Extensive aggregation framework
+- Transaction support
 
-### Pro
+---
 
-1. lorem
-2. ipsum
-3. dolor sit amet
-   
-</div>
-<div>
+## Data Models
 
-### Con
+Flexible Schema
 
-1. consectetur adipiscing
-2. quis nostrud exercitation
-3. commodo consequat. Duis aute irure dolor in reprehenderit
-   
-</div>  
-</sidebyside>
+---
+
+## Document Structure
+
+- Embedded Data
+- References
+
+---
+## Atomicity of Write Operations
+
+---
+
+## Getting started
+
+Install Mongdb and client
+
+---
+
+## Creating a DB, Collection & Document
+
+---
+
+## My first query
+
+---
+
+## Query operators
+
+---
+
