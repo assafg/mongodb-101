@@ -103,6 +103,13 @@ const MongoClient = require('mongodb').MongoClient;
 
 ## Query - the selection filter
 
+```js
+db.users.findOne({ _id: '12345' })
+
+db.users.find({ gender: 'male', age: 20 })
+```
+---
+
 ### Comparison operators
 
 |Name|Description|
@@ -119,11 +126,9 @@ const MongoClient = require('mongodb').MongoClient;
 ---
 
 ```js
-
-db.users.find({ name: 'John' })
+db.users.find({ color: { $in: ['red', 'green', 'blue']}})
 
 db.users.find({ age: { $gt: 20 }})
-
 ```
 
 ---
@@ -138,9 +143,7 @@ $nor|Joins query clauses with a logical NOR returns all documents that fail to m
 $or|Joins query clauses with a logical OR returns all documents that match the conditions of either clause.
 
 ```js
-
 db.users.find({ $or: [{ name: 'John' }, { name: 'Snow' }])
-
 ```
 
 ---
@@ -152,9 +155,41 @@ db.users.find({ $or: [{ name: 'John' }, { name: 'Snow' }])
 $exists|Matches documents that have the specified field.
 $type|Selects documents if a field is of the specified type.
 
+```js
+db.users.find({ email: { $exists: 1 }})
+```
+
 ---
 
 See full documentations [here](https://docs.mongodb.com/manual/reference/operator/query/)
+
+---
+
+## Sort
+
+```js
+db.collection.find({...}).sort( { age: -1 } )
+```
+
+---
+
+## Limit
+
+```js
+db.collection.find({...}).limit(10)
+```
+
+---
+
+## Count
+
+```js
+db.collection.find({...}).count()
+
+// or
+
+db.collection.count({...})
+```
 
 ---
 
@@ -164,14 +199,9 @@ Lets get some data:
 
 ---
 
-## Projection - determine which field/s to return
+## Practice
 
-```
-{ field1: <value>, field2: <value> ... }
-```
-
-`value = 1` -> return
-`value = 2` -> omit
-
-
+1. Find all the reviews by 'Jean'
+2. Find all the reviews by 'Jean' that begin with the word 'Great'
+3. List top 10 reviews 
 
