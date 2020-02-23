@@ -203,5 +203,166 @@ Lets get some data:
 
 1. Find all the reviews by 'Jean'
 2. Find all the reviews by 'Jean' that begin with the word 'Great'
-3. List top 10 reviews 
+3. List last 10 reviews by 'Jean' 
+4. Find all the listings in 'Brooklyn'
+5. Find all the listings with 4 bedrooms and at least 2 bathrooms
+6. Find the cheapest 10 listings of 5 bedroom in 'Brooklyn'
+7. Find the most expensive listing in 'Manhattan'
 
+---
+## Advanced Practice
+
+1. Find all listings that 'Jean' has reviewd
+2. Update the price of listing (`_id: '2595'`) to 555
+3. Add a review to a listing (`_id: '2595'`)
+4. Increase all prices for listings in Brooklyn by 10%
+   
+---
+
+```js
+// 1. Find all listings that 'Jean' has reviewd
+db.getCollection('listings').find({ reviews: { $elemMatch: {reviewer_name: 'Jean'} }})
+
+// 2. Update the price of listing (`_id: '2595'`) to 555
+db.getCollection('listings').updateOne({ _id: '2595'}, {
+    $set: { price: 555 }
+})
+
+// 2. Add a review to listing _id: '2595' 
+db.getCollection('listings').updateOne({ _id: '2595'}, {
+    $push: {
+        reviews: {
+            "_id" : "my_review",
+            "listing_id" : "2595",
+            "date" : "2020-02-22",
+            "reviewer_id" : "007",
+            "reviewer_name" : "Assaf",
+            "comments" : "This is demo review"
+        }
+    }
+})
+
+// 4. Increase all prices for listings in Brooklyn by 10%
+db.getCollection('listings').find({ city: 'Brooklyn' }).forEach(function(data) {
+    db.listings.update({
+        "_id": data._id,
+    }, {
+        "$set": {
+            "price": data.price * 1.1
+        }
+    });
+});
+```
+
+---
+
+## Index
+
+- Create Indexes to Support Your Queries
+- Use Indexes to Sort Query Results
+
+---
+
+![Basic index](./index-for-sort.bakedsvg.svg)
+
+---
+
+## Creating an index
+
+```js
+db.collection.createIndex( <key and index type specification>, <options> )
+
+```
+
+```js
+db.collection.createIndex( { name: -1 } )
+```
+
+---
+## Index Types
+
+1. Single field `{ score: 1 }`
+2. Compound Index - `{ userid: 1, score: -1 }`
+3. Multy-key index
+4. Text Index
+5. Wildcard Index `$**`
+6. 2dsphere Index
+
+---
+
+# Aggrgation
+
+---
+
+## Aggregation Pipeline
+
+- Uses a data pipeline process concept
+- Each stage performs an operation or transformation on the data
+- By default Mongo will scan the entire collection operating on a single document at a time
+- When possible, place `$match` operators at the beginning of the pipeline
+
+---
+
+## Examples
+
+[Zip Code Example](https://docs.mongodb.com/manual/tutorial/aggregation-zip-code-data-set/)
+
+[User data](https://docs.mongodb.com/manual/tutorial/aggregation-with-user-preference-data/)
+
+---
+## Advanced queries
+
+1. Find the listings with the most reviews
+2. Find the City with the most listings
+3. Find the City with the most listings of 4 bedrooms or more
+
+---
+
+## Solution 1
+
+Option1
+```js
+db.getCollection('reviews').aggregate([
+    { $group: { _id: "$listing_id", reviews: { $sum: 1 } } },
+    { $sort: { "reviews": -1 } }
+])
+```
+
+Option2
+```js
+db.getCollection('listings').aggregate([
+   {
+      $project: {
+         name: 1,
+         numberOfReviews: { $cond: { if: { $isArray: "$reviews" }, then: { $size: "$reviews" }, else: 0} }
+      }
+   },
+   {
+       $sort: {numberOfReviews: -1 }
+   }
+] )
+
+```
+
+---
+
+## Solution 2
+
+```js
+db.getCollection('listings').aggregate([
+    { $group: { _id: "$city", num_of_listings: { $sum: 1}}},
+    { $sort: { "num_of_listings": -1 }}
+])
+```
+
+---
+
+## Solution 3
+
+```js
+db.getCollection('listings').aggregate([
+    { $match: { bedrooms: { $gte: 4 }}},
+    { $group: { _id: "$city", num_of_listings: { $sum: 1}}},
+    { $sort: { "num_of_listings": -1 }}
+])
+```

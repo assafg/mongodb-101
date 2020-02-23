@@ -77,6 +77,10 @@ function TemplateWrapper(props) {
           href="https://fonts.googleapis.com/css?family=Quicksand&display=swap"
           rel="stylesheet"
         ></link>
+        <link
+          href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css"
+          rel="stylesheet"
+        ></link>
       </Helmet>
       <Swipeable onSwipedLeft={swipeLeft} onSwipedRight={swipeRight}>
         <Transition location={location}>

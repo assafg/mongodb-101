@@ -1,8 +1,10 @@
 :root {
-    --bg: #1e1e1e;
+    /* --bg: #1e1e1e; */
+    --bg: #FFF;
     --meta: #888;
     --accent: #3178cd;
-    --text: #ffffff;
+    /* --text: #ffffff; */
+    --text: #3e3e3e;    
     --base: 1.5rem;
     --bg2: #f47620;
 }
@@ -239,3 +241,10 @@ sidebyside > pre {
     max-width: 48vw;
     margin-right: 1rem;
 }
+
+table td, table th {
+    text-align: left;
+    vertical-align: top;
+    padding-right: 2rem;
+}
+
